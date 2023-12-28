@@ -5,7 +5,8 @@ import time
 
 master = Tk()
 w = Canvas(master, width=1000, height=520)
-
+p_image = PhotoImage(file="stickman.png")
+p_image = p_image.subsample(12)
 class ElevatorState(Enum):
     """Enumerated states for the elevator."""
     IDLE = "IDLE"
@@ -43,11 +44,17 @@ class Elevator:
         """Floor request is fed to the elevator."""
         self.requesting_floor = req_floor
         global p
-        p = w.create_rectangle(172 + 100,
+        p = w.create_image(
+            182 + 100,
+            (10 - self.requesting_floor) * 50 + 22 + 25,
+            image=p_image,
+            anchor=CENTER  # Adjust the anchor point as needed
+        )
+        """p = w.create_rectangle(172 + 100,
                            (10 - self.requesting_floor) * 50 + 12 + 25,
                            192 + 100,
                            (10 - self.requesting_floor) * 50 + 32 + 25,
-                           fill="red")
+                           fill="red")"""
         master.update()
         time.sleep(0.5)
         if self.state == ElevatorState.IDLE:
@@ -118,11 +125,12 @@ class Elevator:
         w.delete(p)
         print("Doors are opening...")
         time.sleep(2)
-        p = w.create_rectangle(75+10,
-                                  (10-self.current_floor)*50+15+10,
-                                  85+10,
-                                  (10-self.current_floor)*50+25+10,
-                                  fill = 'red')
+        p = w.create_image(
+            80 + 10,  # X coordinate
+            (10 - self.current_floor) * 50 + 20 + 10,  # Y coordinate
+            image=p_image,
+            anchor=CENTER  # Adjust the anchor point as needed
+        )
         master.update()
         self.close_doors_at_requested()
 
@@ -172,11 +180,12 @@ class Elevator:
         self.current_floor += 1
         elevator_sqr = w.create_rectangle(72, (10 - elevator.current_floor) * 50 + 12, 168,
                                           (10 - elevator.current_floor) * 50 + 58, fill="grey")
-        p = w.create_rectangle(75 + 10,
-                               (10 - self.current_floor) * 50 + 15 + 10,
-                               85 + 10,
-                               (10 - self.current_floor) * 50 + 25 + 10,
-                               fill='red')
+        p = w.create_image(
+            80 + 10,  # X coordinate
+            (10 - self.current_floor) * 50 + 20 + 10,  # Y coordinate
+            image=p_image,
+            anchor=CENTER  # Adjust the anchor point as needed
+        )
         master.update()
         print(f"Elevator at floor {self.current_floor}")
         self.at_target_floor()
@@ -196,11 +205,12 @@ class Elevator:
         self.current_floor -= 1
         elevator_sqr = w.create_rectangle(72, (10 - elevator.current_floor) * 50 + 12, 168,
                                           (10 - elevator.current_floor) * 50 + 58, fill="grey")
-        p = w.create_rectangle(75 + 10,
-                               (10 - self.current_floor) * 50 + 15 + 10,
-                               85 + 10,
-                               (10 - self.current_floor) * 50 + 25 + 10,
-                               fill='red')
+        p = w.create_image(
+            80 + 10,  # X coordinate
+            (10 - self.current_floor) * 50 + 20 + 10,  # Y coordinate
+            image=p_image,
+            anchor=CENTER  # Adjust the anchor point as needed
+        )
         master.update()
         print(f"Elevator at floor {self.current_floor}")
         self.above_target_floor()
@@ -212,11 +222,12 @@ class Elevator:
         global p
         w.delete(p)
         master.update()
-        p = w.create_rectangle(172 + 100,
-                               (10 - self.targeted_floor) * 50 + 12 + 25,
-                               192 + 100,
-                               (10 - self.targeted_floor) * 50 + 32 + 25,
-                               fill="red")
+        p = w.create_image(
+            182 + 100,
+            (10 - self.targeted_floor) * 50 + 22 + 25,
+            image=p_image,
+            anchor=CENTER  # Adjust the anchor point as needed
+        )
         master.update()
         time.sleep(2)
 
@@ -259,6 +270,6 @@ if __name__ == "__main__":
     global elevator_Sqr
     elevator_sqr = w.create_rectangle(72, (10 - elevator.current_floor) * 50 + 12, 168, (10 - elevator.current_floor) * 50 + 58, fill="grey")
     master.update()
-    elevator.request(3)
+    elevator.request(9)
     #elevator.request(1)
-    elevator.target(9)
+    elevator.target(4)
